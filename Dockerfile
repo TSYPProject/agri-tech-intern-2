@@ -1,14 +1,14 @@
-FROM python:3.11-slim
+# 1. Utiliser une version légère de Python
+FROM python:3.10-slim
 
+# 2. Définir le dossier de travail à l'intérieur du conteneur
 WORKDIR /app
 
-# Install the shopping list
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# 3. Copier tous les fichiers du projet (le script, l'image du drone, etc.) dans le conteneur
+COPY . /app
 
-# Put your code and your picture into the box
-COPY week2_practice.py .
-COPY real_drone_map.jpg .
+# 4. Installer les bibliothèques requises (headless pour éviter les bugs d'affichage sous Docker)
+RUN pip install --no-cache-dir numpy opencv-python-headless matplotlib
 
-# Tell the box to run your code when it turns on
+# 5. LA LIGNE MANQUANTE : Indiquer à Docker d'exécuter automatiquement votre script au démarrage
 CMD ["python", "week2_practice.py"]
